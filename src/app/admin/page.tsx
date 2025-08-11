@@ -411,20 +411,6 @@ export default function AdminPage() {
               {isLoading ? 'Logging in...' : 'Login'}
             </LoginButton>
           </form>
-
-          <div style={{ 
-            marginTop: '2rem', 
-            padding: '1rem', 
-            background: 'rgba(139, 0, 0, 0.2)',
-            borderRadius: '6px',
-            fontSize: '0.9rem',
-            color: '#C0C0C0',
-            textAlign: 'center'
-          }}>
-            <strong>Demo Credentials:</strong><br />
-            Username: admin<br />
-            Password: kyokushin2024
-          </div>
         </LoginCard>
       </AdminContainer>
     );
