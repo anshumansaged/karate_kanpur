@@ -3,6 +3,7 @@
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import { api } from '../../utils/api';
 
 const ContactContainer = styled.div`
   min-height: 100vh;
@@ -421,11 +422,12 @@ export default function ContactPage() {
     setIsLoading(true);
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      const response = await api.contact.submit(formData);
+      console.log('Contact form submitted successfully:', response);
       setIsSubmitted(true);
     } catch (error) {
       console.error('Error submitting form:', error);
+      alert('Failed to send message. Please try again.');
     } finally {
       setIsLoading(false);
     }

@@ -3,6 +3,7 @@
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import { api } from '../../utils/api';
 
 const RegistrationContainer = styled.div`
   min-height: 100vh;
@@ -428,11 +429,47 @@ export default function DojoRegistrationPage() {
     setIsLoading(true);
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      const submissionData = {
+        name: formData.name,
+        ownerInfo: {
+          name: formData.instructor.name,
+          email: formData.instructor.email,
+          phone: formData.instructor.phone,
+          dateOfBirth: new Date(), // Default to current date, adjust as needed
+          experience: formData.instructor.experience,
+          certifications: [formData.instructor.rank] // Using rank as certification
+        },
+        location: {
+          address: formData.location.address,
+          city: formData.location.city,
+          state: formData.location.state,
+          pincode: '', // Not in current form, could be added
+          country: 'India'
+        },
+        facilities: {
+          matSize: '', // Not in current form, could be added
+          changingRooms: false, // Default values
+          parking: false,
+          equipment: formData.facilities,
+          specialFeatures: []
+        },
+        schedule: [], // Default empty, could be expanded
+        fees: {
+          monthly: 0, // Default values, could be added to form
+          quarterly: 0,
+          yearly: 0,
+          registrationFee: 0
+        },
+        yearEstablished: parseInt(formData.yearEstablished) || new Date().getFullYear(),
+        description: formData.description
+      };
+
+      const response = await api.dojos.register(submissionData);
+      console.log('Registration successful:', response);
       setIsSubmitted(true);
     } catch (error) {
       console.error('Error submitting form:', error);
+      alert('Registration failed. Please try again.');
     } finally {
       setIsLoading(false);
     }

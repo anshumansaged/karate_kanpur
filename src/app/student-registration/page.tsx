@@ -3,6 +3,7 @@
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import { api } from '../../utils/api';
 
 const RegistrationContainer = styled.div`
   min-height: 100vh;
@@ -560,11 +561,35 @@ export default function StudentRegistrationPage() {
     setIsLoading(true);
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      const submissionData = {
+        name: `${formData.personalInfo.firstName} ${formData.personalInfo.lastName}`,
+        email: formData.personalInfo.email,
+        phone: formData.personalInfo.phone,
+        dateOfBirth: new Date(formData.personalInfo.dateOfBirth),
+        address: {
+          street: formData.address.street,
+          city: formData.address.city,
+          state: formData.address.state,
+          zipCode: formData.address.zipCode
+        },
+        emergencyContact: formData.personalInfo.emergencyContact,
+        dojoPreference: formData.dojoPreference.preferredDojo,
+        experience: {
+          previousExperience: formData.martialArtsBackground.previousExperience,
+          styles: formData.martialArtsBackground.styles,
+          yearsOfExperience: parseInt(formData.martialArtsBackground.yearsOfExperience) || 0,
+          currentRank: formData.martialArtsBackground.currentRank
+        },
+        healthInfo: formData.healthInfo,
+        goals: formData.goals
+      };
+
+      const response = await api.students.register(submissionData);
+      console.log('Registration successful:', response);
       setIsSubmitted(true);
     } catch (error) {
       console.error('Error submitting form:', error);
+      alert('Registration failed. Please try again.');
     } finally {
       setIsLoading(false);
     }

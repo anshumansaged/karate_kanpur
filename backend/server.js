@@ -9,6 +9,7 @@ const studentRoutes = require('./routes/studentRoutes');
 const eventRoutes = require('./routes/eventRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const authRoutes = require('./routes/authRoutes');
+const contactRoutes = require('./routes/contact');
 
 dotenv.config();
 
@@ -41,6 +42,7 @@ app.use('/api/dojos', dojoRoutes);
 app.use('/api/students', studentRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/contact', contactRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

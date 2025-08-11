@@ -3,6 +3,7 @@
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import { api } from '../../utils/api';
 
 const AdminContainer = styled.div`
   min-height: 100vh;
@@ -317,22 +318,22 @@ export default function AdminPage() {
     }));
   };
 
-  const handleLogin = async (e: React.FormEvent) => {
+    const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      const response = await api.auth.login({
+        email: loginData.username, // Using username field as email
+        password: loginData.password
+      });
       
-      // Simple demo login (in real app, validate against backend)
-      if (loginData.username === 'admin' && loginData.password === 'kyokushin2024') {
-        setIsLoggedIn(true);
-      } else {
-        alert('Invalid credentials. Use admin/kyokushin2024 for demo.');
-      }
+      // Store token in localStorage
+      localStorage.setItem('adminToken', response.token);
+      setIsLoggedIn(true);
     } catch (error) {
       console.error('Login error:', error);
+      alert('Invalid credentials. Please try again.');
     } finally {
       setIsLoading(false);
     }
